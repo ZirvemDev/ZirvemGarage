@@ -12,7 +12,7 @@
                         </div>
                     </slot>
                 </th>
-                <th v-if="actions && actions.length > 0" scope="col" class="align-middle px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th v-if="hasActions" scope="col" class="align-middle px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                     <slot name="actions">{{ trans('global.actions.name') }}</slot>
                 </th>
             </tr>
@@ -24,7 +24,7 @@
                         {{ record && record.hasOwnProperty(j) ? record[j] : '' }}
                     </slot>
                 </td>
-                <td v-if="actions && actions.length > 0" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td v-if="hasActions" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <slot :name="'actions-'+j" v-for="(action, j) in actions">
                         <router-link v-if="action.hasOwnProperty('to') && action.to" :to="getActionPage(action, record)" :class="getActionClass(action)" :title="action.name">
                             <i v-if="action.icon" :class="action.icon"></i>
@@ -103,7 +103,9 @@ export default defineComponent({
         },
     },
     setup(props, {emit}) {
-
+        const hasActions = computed(() => {
+            return props.actions && typeof props.actions === 'object' && Object.keys(props.actions).length > 0;
+        });
         const currentSort = reactive({column: null, direction: 'ASC'});
 
         const headersLength = computed(() => {
@@ -203,6 +205,7 @@ export default defineComponent({
             sortControlClasses,
             headersLength,
             trans,
+            hasActions
         }
     }
 });

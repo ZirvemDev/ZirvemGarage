@@ -200,10 +200,10 @@ export default defineComponent({
         function fetchPage(params) {
             table.records = [];
             table.loading = true;
-            let query = prepareQuery(params);console.log('response', query); 
+            let query = prepareQuery(params);
             service
                 .oldQuery(query)
-                .then((response) => { console.log('response', response);
+                .then((response) => { 
                 
                     table.records = response.data.data;
                     table.pagination.meta = response.data.meta;
